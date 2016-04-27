@@ -714,6 +714,9 @@
             NSInteger y = _chartMarginBottom + _chartCavanHeight;
             for (NSUInteger i = 0; i < [self.xLabels count]; i++) {
                 point = CGPointMake(2 * _chartMarginLeft +  (i * _xLabelWidth), _chartMarginBottom + _chartCavanHeight);
+		if( i == 0 ){
+			continue;
+		}
                 if([self.xLabels count] > 7){
                     if(i % (int)([self.xLabels count] / 7) == 0){
                         CGContextMoveToPoint(ctx, point.x + x, point.y - 5);
