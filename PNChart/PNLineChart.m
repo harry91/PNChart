@@ -6,6 +6,8 @@
 //  Copyright (c) 2013年 kevinzhow. All rights reserved.
 //
 
+//  Modified by Guangyu 2016/4/27
+
 #import "PNLineChart.h"
 #import "PNColor.h"
 #import "PNChartLabel.h"
