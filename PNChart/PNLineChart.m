@@ -6,8 +6,6 @@
 //  Copyright (c) 2013年 kevinzhow. All rights reserved.
 //
 
-//  Modified by Guangyu 2016/4/27
-
 #import "PNLineChart.h"
 #import "PNColor.h"
 #import "PNChartLabel.h"
@@ -207,9 +205,12 @@
             NSInteger x = (index *  _xLabelWidth + _chartMarginLeft + _xLabelWidth /2.0 );
             NSInteger y = _chartMarginBottom + _chartCavanHeight;
 
-            PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger)_xLabelWidth, (NSInteger)_chartMarginBottom)];
+            PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x - 35/2, y, 35, (NSInteger)_chartMarginBottom + 5)];
             [label setTextAlignment:NSTextAlignmentCenter];
+            [label setAdjustsFontSizeToFitWidth:true];
+            _xLabelFont = [UIFont systemFontOfSize:8.3f];
             label.text = labelText;
+            
             [self setCustomStyleForXLabel:label];
             [self addSubview:label];
             [_xChartLabels addObject:label];
@@ -709,11 +710,39 @@
 
             // draw x axis separator
             CGPoint point;
+            NSInteger x = (0 * _xLabelWidth - _chartMarginLeft - 1 + _xLabelWidth /2.0 );
+            NSInteger y = _chartMarginBottom + _chartCavanHeight;
             for (NSUInteger i = 0; i < [self.xLabels count]; i++) {
                 point = CGPointMake(2 * _chartMarginLeft +  (i * _xLabelWidth), _chartMarginBottom + _chartCavanHeight);
-                CGContextMoveToPoint(ctx, point.x, point.y - 2);
-                CGContextAddLineToPoint(ctx, point.x, point.y);
-                CGContextStrokePath(ctx);
+                if([self.xLabels count] > 7){
+                    if(i % (int)([self.xLabels count] / 7) == 0){
+                        CGContextMoveToPoint(ctx, point.x + x, point.y - 5);
+                        CGContextAddLineToPoint(ctx, point.x + x, point.y);
+                        CGContextStrokePath(ctx);
+                        CGContextMoveToPoint(ctx, point.x + x + 1, point.y - 5);
+                        CGContextAddLineToPoint(ctx, point.x + x + 1, point.y);
+                        CGContextStrokePath(ctx);
+                    }else{
+                        CGContextMoveToPoint(ctx, point.x + x, point.y - 2);
+                        CGContextAddLineToPoint(ctx, point.x + x, point.y);
+                        CGContextStrokePath(ctx);
+                    }
+                }else{
+                    if(i == 0 || i == [self.xLabels count] - 1){
+                        CGContextMoveToPoint(ctx, point.x + x, point.y - 5);
+                        CGContextAddLineToPoint(ctx, point.x + x, point.y);
+                        CGContextStrokePath(ctx);
+                        CGContextMoveToPoint(ctx, point.x + x + 1, point.y - 5);
+                        CGContextAddLineToPoint(ctx, point.x + x + 1, point.y);
+                        CGContextStrokePath(ctx);
+                    }else{
+                        CGContextMoveToPoint(ctx, point.x + x, point.y - 2);
+                        CGContextAddLineToPoint(ctx, point.x + x, point.y);
+                        CGContextStrokePath(ctx);
+                    }
+                }
+                
+
             }
 
             // draw y axis separator
